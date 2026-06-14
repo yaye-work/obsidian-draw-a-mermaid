@@ -1,6 +1,6 @@
 {
   "id": "mermaid-visual",
-  "name": "Mermaid Visual Editor",
+  "name": "Draw a Mermaid",
   "version": "0.1.0",
   "minAppVersion": "1.5.0",
   "description": "Build mermaid flowcharts visually — drag blocks and connectors on a canvas, rename inline, and get live-generated mermaid code. Adds an editor to mermaid code blocks and a ribbon button.",
