@@ -45,7 +45,10 @@
 	align-items: center;
 	gap: 8px;
 	flex-wrap: wrap;
-	padding-bottom: 4px;
+	padding: 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	box-shadow: var(--input-shadow);
 }
 .mv-tool {
 	padding: 5px 10px;
