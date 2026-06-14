@@ -59,9 +59,8 @@
 }
 .mv-segmented {
 	display: inline-flex;
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--background-modifier-border-hover);
 	border-radius: 6px;
-	overflow: hidden;
 	box-shadow: var(--input-shadow);
 }
 .mv-seg {
@@ -85,6 +84,12 @@
 }
 .mv-seg:first-child {
 	border-left: none;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.mv-seg:last-child {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 .mv-seg-shape {
 	/* Square cells for the icon glyphs. */
