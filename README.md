@@ -1,19 +1,19 @@
 # Draw a Mermaid
 
-Build [mermaid](https://mermaid.js.org/) flowcharts **visually** inside Obsidian — drag blocks and connectors on a canvas, rename them inline, and let the plugin generate the mermaid code for you. A live preview renders as you build.
+Build [mermaid](https://mermaid.js.org/) flowcharts **visually** inside Obsidian: drag blocks and connectors on a canvas, rename them inline, and let the plugin generate the mermaid code for you. A live preview renders as you build.
 
 ![demo](docs/demo.gif)
 
 ## Features
 
-- **Visual-first canvas** — the canvas is the source of truth; mermaid code is generated from it.
+- **Visual-first canvas**: the canvas is the source of truth; mermaid code is generated from it.
 - **Add blocks** by clicking a shape (rectangle, rounded, diamond, circle).
 - **Connect blocks** by dragging the ● handle onto another block. Drop on empty space to spawn a new connected block; drop onto an existing arrow to splice a block into that connection.
 - **Rename** a block by double-clicking it, or a connector by double-clicking the arrow.
 - **Multi-select** with a rubber-band marquee (or Shift-click) for bulk move, reshape, duplicate, and delete.
 - **⌥/Alt-drag to duplicate** a block or a whole selection.
-- **Live output** — rendered diagram and generated mermaid code update in real time.
-- **Layout persistence** — your block positions are stored in a `%% mv:` comment in the block, so reopening restores the canvas.
+- **Live output**: rendered diagram and generated mermaid code update in real time.
+- **Layout persistence**: your block positions are stored in a `%% mv:` comment in the block, so reopening restores the canvas.
 
 ## Usage
 
@@ -42,7 +42,7 @@ npm run build  # production build (type-check + bundle)
 
 ## About
 
-Made by **yaye.work** — multimedia design.
+Made by **yaye.work**: multimedia design.
 Site: [www.yaye.work](https://www.yaye.work) · Contact: hi@yaye.work
 
 ## License
