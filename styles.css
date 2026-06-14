@@ -60,7 +60,7 @@
 }
 .mv-segmented {
 	display: inline-flex;
-	border: 1px solid var(--background-modifier-border);
+	border: 1px solid var(--background-modifier-border-hover);
 	border-radius: 6px;
 	overflow: hidden;
 	box-shadow: var(--input-shadow);
