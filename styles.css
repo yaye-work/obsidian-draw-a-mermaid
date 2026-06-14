@@ -64,14 +64,36 @@
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 6px;
 	overflow: hidden;
+	box-shadow: none;
 }
 .mv-seg {
-	padding: 5px 10px;
+	/* Reset Obsidian's default button chrome so the group reads as one unit. */
+	box-shadow: none !important;
 	border: none;
 	border-radius: 0;
+	outline: none;
+	margin: 0;
+	/* Equal-size cells with the glyph centered. */
+	width: 38px;
+	height: 30px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 17px;
+	line-height: 1;
 	background: var(--background-secondary);
+	color: var(--text-muted);
 	cursor: pointer;
-	box-shadow: none;
+	/* Thin divider between cells, not around them. */
+	border-left: 1px solid var(--background-modifier-border);
+}
+.mv-seg:first-child {
+	border-left: none;
+}
+.mv-seg:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-normal);
 }
 .mv-seg.is-active {
 	background: var(--interactive-accent);
