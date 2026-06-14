@@ -63,9 +63,12 @@
 	border-radius: 6px;
 	box-shadow: var(--input-shadow);
 }
+.mv-segmented .mv-seg {
+	/* Reset Obsidian's default button shadow (specificity beats `button`). */
+	box-shadow: none;
+}
 .mv-seg {
 	/* Reset Obsidian's default button chrome so the group reads as one unit. */
-	box-shadow: none !important;
 	border: none;
 	border-radius: 0;
 	outline: none;
@@ -345,4 +348,8 @@
 }
 .mv-footer button {
 	cursor: pointer;
+}
+.mv-label-input {
+	width: 100%;
+	margin: 4px 0 12px;
 }

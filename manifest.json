@@ -1,7 +1,7 @@
 {
   "id": "draw-a-mermaid",
   "name": "Draw a Mermaid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minAppVersion": "1.5.0",
   "description": "Build mermaid flowcharts visually — drag blocks and connectors on a canvas, rename inline, and get live-generated mermaid code. Adds an editor to mermaid code blocks and a ribbon button.",
   "author": "yaye.work",

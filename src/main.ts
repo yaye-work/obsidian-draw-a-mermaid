@@ -146,7 +146,7 @@ export default class MermaidVisualPlugin extends Plugin {
 			btn.addEventListener("click", (e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				this.openForRenderedBlock(container, ctx);
+				void this.openForRenderedBlock(container, ctx);
 			});
 		});
 	}
@@ -329,7 +329,10 @@ function parseMermaid(code: string): Graph | null {
 		const layoutMatch = line.match(/^%%\s*mv:(\{.*\})\s*$/);
 		if (layoutMatch) {
 			try {
-				layout = JSON.parse(layoutMatch[1]);
+				layout = JSON.parse(layoutMatch[1]) as Record<
+					string,
+					[number, number]
+				>;
 			} catch {
 				/* ignore */
 			}
@@ -419,6 +422,56 @@ function distToSegment(
 	const cx = x1 + t * dx;
 	const cy = y1 + t * dy;
 	return Math.hypot(px - cx, py - cy);
+}
+
+/* ------------------------------------------------------------------ */
+/* Small text-input modal for connector labels                         */
+/* ------------------------------------------------------------------ */
+
+class EdgeLabelModal extends Modal {
+	private value: string;
+	private onSubmit: (value: string) => void;
+
+	constructor(app: App, value: string, onSubmit: (value: string) => void) {
+		super(app);
+		this.value = value;
+		this.onSubmit = onSubmit;
+	}
+
+	onOpen() {
+		const { contentEl } = this;
+		contentEl.empty();
+		contentEl.createEl("h3", { text: "Connector label" });
+		const input = contentEl.createEl("input", {
+			type: "text",
+			cls: "mv-label-input",
+			value: this.value,
+		});
+		input.placeholder = "(leave blank for no label)";
+		const commit = () => {
+			this.onSubmit(input.value);
+			this.close();
+		};
+		input.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				commit();
+			} else if (e.key === "Escape") {
+				this.close();
+			}
+		});
+		const footer = contentEl.createDiv({ cls: "mv-footer" });
+		const ok = footer.createEl("button", { text: "OK", cls: "mod-cta" });
+		ok.addEventListener("click", commit);
+		const cancel = footer.createEl("button", { text: "Cancel" });
+		cancel.addEventListener("click", () => this.close());
+		input.focus();
+		input.select();
+	}
+
+	onClose() {
+		this.contentEl.empty();
+	}
 }
 
 /* ------------------------------------------------------------------ */
@@ -642,15 +695,17 @@ class VisualEditorModal extends Modal {
 	private buildFooter(parent: HTMLElement) {
 		const footer = parent.createDiv({ cls: "mv-footer" });
 		const save = footer.createEl("button", { text: "Save", cls: "mod-cta" });
-		save.addEventListener("click", async () => {
-			try {
-				await this.onSave(generateMermaid(this.g));
-				new Notice("Diagram saved.");
-				this.close();
-			} catch (err) {
-				console.error("Mermaid Visual save failed", err);
-				new Notice("Mermaid Visual: save failed (see console).");
-			}
+		save.addEventListener("click", () => {
+			void (async () => {
+				try {
+					await this.onSave(generateMermaid(this.g));
+					new Notice("Diagram saved.");
+					this.close();
+				} catch (err) {
+					console.error("Draw a Mermaid save failed", err);
+					new Notice("Draw a Mermaid: save failed (see console).");
+				}
+			})();
 		});
 		const cancel = footer.createEl("button", { text: "Cancel" });
 		cancel.addEventListener("click", () => this.close());
@@ -873,9 +928,9 @@ class VisualEditorModal extends Modal {
 		label.addClass("is-editing");
 		label.focus();
 		// select all
-		const range = document.createRange();
+		const range = activeDocument.createRange();
 		range.selectNodeContents(label);
-		const sel = window.getSelection();
+		const sel = activeWindow.getSelection();
 		sel?.removeAllRanges();
 		sel?.addRange(range);
 
@@ -997,9 +1052,9 @@ class VisualEditorModal extends Modal {
 		if (!this.drag) return;
 		if (this.drag.kind === "edge") {
 			this.drag.line.remove();
-			const target = (
-				document.elementFromPoint(e.clientX, e.clientY) as HTMLElement
-			)?.closest(".mv-node") as HTMLElement | null;
+			const target = activeDocument
+				.elementFromPoint(e.clientX, e.clientY)
+				?.closest(".mv-node") as HTMLElement | null;
 			const fromId = this.drag.from;
 			let toId = target?.dataset.id;
 
@@ -1136,11 +1191,10 @@ class VisualEditorModal extends Modal {
 			});
 			hit.addEventListener("dblclick", (ev) => {
 				ev.stopPropagation();
-				const next = window.prompt("Connector label", e.label);
-				if (next !== null) {
+				new EdgeLabelModal(this.app, e.label, (next) => {
 					e.label = next;
 					this.refresh();
-				}
+				}).open();
 			});
 
 			const line = this.edgesSvg.createSvg("line", {
@@ -1178,7 +1232,9 @@ class VisualEditorModal extends Modal {
 		const code = generateMermaid(this.g);
 		this.codeEl.setText(code);
 		if (this.renderTimer !== null) window.clearTimeout(this.renderTimer);
-		this.renderTimer = window.setTimeout(() => this.renderPreview(code), 200);
+		this.renderTimer = window.setTimeout(() => {
+			void this.renderPreview(code);
+		}, 200);
 	}
 
 	private async renderPreview(code: string) {
