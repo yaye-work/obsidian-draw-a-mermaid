@@ -577,15 +577,16 @@ class VisualEditorModal extends Modal {
 
 		// Shape picker: with a node selected, changes its shape;
 		// with nothing selected, adds a new block of that shape.
-		const shapes: { s: Shape; label: string; name: string }[] = [
-			{ s: "rect", label: "▭", name: "Rectangle" },
-			{ s: "round", label: "▢", name: "Rounded" },
-			{ s: "diamond", label: "◇", name: "Diamond (decision)" },
-			{ s: "circle", label: "○", name: "Circle" },
+		const shapes: { s: Shape; name: string }[] = [
+			{ s: "rect", name: "Rectangle" },
+			{ s: "round", name: "Rounded" },
+			{ s: "diamond", name: "Diamond (decision)" },
+			{ s: "circle", name: "Circle" },
 		];
 		const shapeGroup = bar.createDiv({ cls: "mv-segmented" });
-		for (const { s, label, name } of shapes) {
-			const b = shapeGroup.createEl("button", { cls: "mv-seg", text: label });
+		for (const { s, name } of shapes) {
+			const b = shapeGroup.createEl("button", { cls: "mv-seg mv-seg-shape" });
+			this.addShapeGlyph(b, s);
 			b.setAttr("aria-label", name);
 			b.setAttr("title", `${name} — click to add, or reshape selected block(s)`);
 			this.shapeButtons.set(s, b);
@@ -828,6 +829,35 @@ class VisualEditorModal extends Modal {
 		if (!n.el) return;
 		n.el.removeClass("shape-rect", "shape-round", "shape-diamond", "shape-circle");
 		n.el.addClass(`shape-${n.shape}`);
+	}
+
+	/** Draw a matching line-style glyph for a shape-picker button. */
+	private addShapeGlyph(btn: HTMLElement, shape: Shape) {
+		const svg = btn.createSvg("svg", {
+			attr: {
+				viewBox: "0 0 24 24",
+				width: "16",
+				height: "16",
+				fill: "none",
+				stroke: "currentColor",
+				"stroke-width": "2",
+				"stroke-linecap": "round",
+				"stroke-linejoin": "round",
+			},
+		});
+		if (shape === "rect") {
+			svg.createSvg("rect", {
+				attr: { x: "3.5", y: "7", width: "17", height: "10" },
+			});
+		} else if (shape === "round") {
+			svg.createSvg("rect", {
+				attr: { x: "3.5", y: "7", width: "17", height: "10", rx: "3.5" },
+			});
+		} else if (shape === "diamond") {
+			svg.createSvg("path", { attr: { d: "M12 3 L21 12 L12 21 L3 12 Z" } });
+		} else {
+			svg.createSvg("circle", { attr: { cx: "12", cy: "12", r: "8.5" } });
+		}
 	}
 
 	private positionNode(n: GNode) {
