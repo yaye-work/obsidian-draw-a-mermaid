@@ -43,12 +43,6 @@ npm run build  # production build (type-check + bundle)
 ## About
 I'm a designer main, so when I realised I have write code for a visual chart, I almost deleted Obsidian(/s). Alas, I got claude's help to build this visual mermaid tool, hope it can help people like me who are looking for a tool like this.
 
-# Who are you any ways?
-I am whoever you want me to be! (I'm a Designer)
-Find me here:
-[www.yaye.work](https://www.yaye.work)
-hi@yaye.work
-
 ## License
 
 [MIT](LICENSE) © yaye.work
